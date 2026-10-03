@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${titulo}">Formulario</title>
+    <link rel="stylesheet" th:href="@{/css/estilos.css}">
+</head>
+<body>
+<h1 th:text="${titulo}"></h1>
+<form th:action="@{/categorias/guardar}" th:object="${categoria}" method="post">
+    <input type="hidden" th:field="*{id}" />
+    <div>
+        <label>Nombre:</label>
+        <input type="text" th:field="*{nombre}" />
+        <span class="campo-error" th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}"></span>
+    </div>
+    <div>
+        <label>Descripción:</label>
+        <textarea th:field="*{descripcion}"></textarea>
+        <span class="campo-error" th:if="${#fields.hasErrors('descripcion')}" th:errors="*{descripcion}"></span>
+    </div>
+    <button type="submit">Guardar</button>
+    <a th:href="@{/categorias}">Cancelar</a>
+</form>
+</body>
+</html>

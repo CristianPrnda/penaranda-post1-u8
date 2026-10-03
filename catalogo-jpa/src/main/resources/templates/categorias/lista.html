@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Categorías</title>
+    <link rel="stylesheet" th:href="@{/css/estilos.css}">
+</head>
+<body>
+<h1>Lista de Categorías</h1>
+<p th:if="${error}" class="error" th:text="${error}"></p>
+<a th:href="@{/categorias/nuevo}">Nueva Categoría</a>
+<table>
+    <thead>
+    <tr><th>Nombre</th><th>Descripción</th><th>Acciones</th></tr>
+    </thead>
+    <tbody>
+    <tr th:each="c : ${categorias}">
+        <td th:text="${c.nombre}"></td>
+        <td th:text="${c.descripcion}"></td>
+        <td>
+            <a th:href="@{/categorias/editar/{id}(id=${c.id})}">Editar</a> |
+            <a th:href="@{/categorias/eliminar/{id}(id=${c.id})}">Eliminar</a>
+        </td>
+    </tr>
+    <tr th:if="${#lists.isEmpty(categorias)}">
+        <td colspan="3">No hay categorías registradas.</td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>
