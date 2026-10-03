@@ -2,6 +2,8 @@ package com.universidad.catalogo.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "categorias")
@@ -20,6 +22,11 @@ public class Categoria {
     @Column(name = "descripcion", length = 250)
     private String descripcion;
 
+    // Lado inverso (mappedBy): sin @JoinColumn y sin cascade de eliminación.
+    // Los productos se crean y reasocian desde el lado propietario (Producto).
+    @OneToMany(mappedBy = "categoria", fetch = FetchType.LAZY)
+    private List<Producto> productos = new ArrayList<>();
+
     // Constructor vacío requerido por JPA
     public Categoria() {}
 
@@ -30,4 +37,7 @@ public class Categoria {
     public void setNombre(String nombre) { this.nombre = nombre; }
     public String getDescripcion() { return descripcion; }
     public void setDescripcion(String descripcion) { this.descripcion = descripcion; }
+
+    // Sin setter: la lista se gestiona desde el lado propietario
+    public List<Producto> getProductos() { return productos; }
 }
