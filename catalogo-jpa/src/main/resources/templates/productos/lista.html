@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Productos</title>
+    <link rel="stylesheet" th:href="@{/css/estilos.css}">
+</head>
+<body>
+<h1>Lista de Productos</h1>
+<p>
+    <a th:href="@{/productos/nuevo}">Nuevo Producto</a> |
+    <a th:href="@{/categorias}">Categorías</a>
+</p>
+
+<!-- Consulta JPQL: productos de una categoría con precio mayor a un valor -->
+<form th:action="@{/productos/filtrar}" method="get">
+    <div>
+        <label>Categoría:</label>
+        <select name="categoriaId" required>
+            <option value="">-- Seleccione --</option>
+            <option th:each="c : ${categorias}" th:value="${c.id}" th:text="${c.nombre}"></option>
+        </select>
+    </div>
+    <div>
+        <label>Precio mayor a:</label>
+        <input type="number" name="minimo" step="0.01" min="0" required>
+    </div>
+    <button type="submit">Filtrar</button>
+</form>
+
+<table>
+    <thead>
+    <tr><th>Nombre</th><th>Categoría</th><th>Precio</th><th>Stock</th><th>Acciones</th></tr>
+    </thead>
+    <tbody>
+    <tr th:each="p : ${productos}">
+        <td th:text="${p.nombre}"></td>
+        <td th:text="${p.categoria.nombre}"></td>
+        <td th:text="${p.precio}"></td>
+        <td th:text="${p.stock}"></td>
+        <td>
+            <a th:href="@{/productos/editar/{id}(id=${p.id})}">Editar</a>
+            <form class="inline" method="post" th:action="@{/productos/eliminar/{id}(id=${p.id})}"
+                  onsubmit="return confirm('¿Eliminar este producto?')">
+                <button type="submit">Eliminar</button>
+            </form>
+        </td>
+    </tr>
+    <tr th:if="${#lists.isEmpty(productos)}">
+        <td colspan="5">No hay productos registrados.</td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${titulo}">Formulario</title>
+    <link rel="stylesheet" th:href="@{/css/estilos.css}">
+</head>
+<body>
+<h1 th:text="${titulo}"></h1>
+<form th:action="@{/productos/guardar}" th:object="${producto}" method="post">
+    <input type="hidden" th:field="*{id}" />
+    <div>
+        <label>Nombre:</label>
+        <input type="text" th:field="*{nombre}" />
+        <span class="campo-error" th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}"></span>
+    </div>
+    <div>
+        <label>Precio:</label>
+        <input type="number" step="0.01" th:field="*{precio}" />
+        <span class="campo-error" th:if="${#fields.hasErrors('precio')}" th:errors="*{precio}"></span>
+    </div>
+    <div>
+        <label>Stock:</label>
+        <input type="number" th:field="*{stock}" />
+        <span class="campo-error" th:if="${#fields.hasErrors('stock')}" th:errors="*{stock}"></span>
+    </div>
+    <div>
+        <label>Categoría:</label>
+        <select name="categoriaId" required>
+            <option value="">-- Seleccione --</option>
+            <option th:each="c : ${categorias}" th:value="${c.id}" th:text="${c.nombre}"
+                    th:selected="${c.id == categoriaId}"></option>
+        </select>
+    </div>
+    <button type="submit">Guardar</button>
+    <a th:href="@{/productos}">Cancelar</a>
+</form>
+</body>
+</html>
